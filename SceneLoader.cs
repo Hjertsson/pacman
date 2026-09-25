@@ -9,7 +9,21 @@ public class SceneLoader
 
     public SceneLoader()
     {
-        loaders = new Dictionary<char, Func<Entity>>();
+        loaders = new Dictionary<char, Func<Entity>>
+        {
+            { '#', () => new Wall() }
+        };
+    }
+
+    public void HandleSceneLoad(Scene scene)
+    {
+        if (nextScene == "") return;
+        scene.Clear();
+        
+
+
+        currentScene = nextScene;
+        nextScene = "";
     }
 
     private bool Create(char symbol, out Entity created)
