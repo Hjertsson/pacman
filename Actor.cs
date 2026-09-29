@@ -51,7 +51,7 @@ public class Actor : Entity
             case 0: return new Vector2f(1, 0);
             case 1: return new Vector2f(0, -1);
             case 2: return new Vector2f(-1, 0);
-            case 3: return new Vector2f(1, 0);
+            case 3: return new Vector2f(0, 1);
             default: return new Vector2f(0, 0);
         }
     }
