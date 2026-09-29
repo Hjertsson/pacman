@@ -22,8 +22,8 @@ public class Actor : Entity
     protected void Reset()
     {
         wasAligned = false;
-        Position = originalPosition;
-        speed = originalSpeed;
+        originalPosition = Position;
+        originalSpeed = speed;
     }
 
     public override void Create(Scene scene)
@@ -46,7 +46,7 @@ public class Actor : Entity
 
     protected static Vector2f ToVector(int dir)
     {
-        switch (dir)
+        switch (dir) //TODO: Vår teori, Kan ej gå ner, men kan gå bakåt. Måste fixas
         {
             case 0: return new Vector2f(1, 0);
             case 1: return new Vector2f(0, -1);

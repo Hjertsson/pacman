@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 
 namespace Pacman;
 
@@ -7,7 +8,7 @@ public class Ghost: Actor
     public override void Create(Scene scene)
     {
         direction = -1;
-        speed = 100.0f;
+        speed = 10.0f;
         moving = true;
         base.Create(scene);
         sprite.TextureRect = new IntRect(36, 0, 18, 18);
@@ -21,8 +22,15 @@ public class Ghost: Actor
             if ((i+2) % 4 == direction) continue;
             if (IsFree(scene, i)) validMoves.Add(i);
         }
-
+        
         int r = new Random().Next(0, validMoves.Count);
+        Console.WriteLine($"r = {r}, validMoves = {validMoves.Count}");
+
+        if (validMoves[r] >= validMoves.Count)
+        {
+            Console.WriteLine($"r = {r}, validMoves = {validMoves.Count}");
+
+        }
         return validMoves[r];
     }
 }
