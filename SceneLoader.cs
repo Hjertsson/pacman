@@ -14,7 +14,8 @@ public class SceneLoader
     {
         loaders = new Dictionary<char, Func<Entity>>
         {
-            { '#', () => new Wall() }
+            { '#', () => new Wall() },
+            { 'g', () => new Ghost()}
         };
     }
 
@@ -32,9 +33,18 @@ public class SceneLoader
                 switch (c)
                 {
                     case '#':
-                        Wall wall = new Wall();
-                        wall.Position = new Vector2f(col * 18, row * 18);
-                        scene.Spawn(wall);
+                        if (Create('#', out Entity wall))
+                        {
+                            wall.Position = new Vector2f(col * 18, row * 18);
+                            scene.Spawn(wall);
+                        };
+                        break;
+                    case 'g':
+                        if (Create('g', out Entity ghost))
+                        {
+                            ghost.Position = new Vector2f(col * 18, row * 18);
+                            scene.Spawn(ghost);
+                        }
                         break;
                 }
 
