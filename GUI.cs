@@ -25,13 +25,18 @@ public class GUI : Entity
         currentHealth = maxHealth;
         base.Create(scene);
 
-        scene.LoseHealth += OnLoseHealth;
-        scene.GainScore += OnScoreGain;
+        scene.Events.LoseHealth += OnLoseHealth;
+        scene.Events.GainScore += OnScoreGain;
     }
 
     private void OnScoreGain(Scene scene, int amount)
     {
         currentScore += amount;
+        if (!scene.FindByType<Coin>(out _))
+        {
+            DontDestroyOnLoad = true;
+            scene.Loader.Reload();
+        }
     }
 
     private void OnLoseHealth(Scene scene, int amount)
@@ -39,15 +44,18 @@ public class GUI : Entity
         currentHealth -= amount;
         if (currentHealth <= 0)
         {
+            DontDestroyOnLoad = false;
+            currentScore = 0;
             scene.Loader.Reload();
         }
+        
     }
 
     public override void Destroy(Scene scene)
     {
         base.Destroy(scene);
-        scene.LoseHealth -= OnLoseHealth;
-        scene.GainScore -= OnScoreGain;
+        scene.Events.LoseHealth -= OnLoseHealth;
+        scene.Events.GainScore -= OnScoreGain;
     }
 
     public override void Render(RenderTarget target)

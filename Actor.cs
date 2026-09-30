@@ -7,12 +7,15 @@ namespace Pacman;
 
 public abstract class Actor : Entity
 {
+    public float AnimationTimer;
+
     private bool wasAligned;
     protected float speed;
     protected int direction;
     protected bool moving;
     protected Vector2f originalPosition;
     protected float originalSpeed;
+    protected float animationTimer;
 
     protected Actor() : base ("pacman")
     {
@@ -32,7 +35,7 @@ public abstract class Actor : Entity
         originalSpeed = speed;
         Reset();
     }
-
+    
     protected bool IsAligned =>
         (int)MathF.Floor(Position.X) % 18 == 0 &&
         (int)MathF.Floor(Position.Y) % 18 == 0;

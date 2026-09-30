@@ -9,9 +9,11 @@ public class SceneLoader
 {
     private readonly Dictionary<char, Func<Entity>> loaders;
     private string currentScene = "", nextScene = "";
+    private GUI gui;
 
     public SceneLoader()
     {
+        gui = new GUI();
         loaders = new Dictionary<char, Func<Entity>>
         {
             { '#', () => new Wall()},
@@ -47,8 +49,8 @@ public class SceneLoader
 
         currentScene = nextScene;
         nextScene = "";
-        GUI gui = new GUI();
-        scene.Spawn(gui);
+        
+        if (!gui.Dead) scene.Spawn(gui);
     }
 
     private bool Create(char symbol, out Entity created)
