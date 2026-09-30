@@ -4,7 +4,7 @@ using SFML.System;
 
 namespace Pacman;
 
-public class Entity
+public abstract class Entity
 {
     private string textureName;
     protected Sprite sprite;
@@ -29,7 +29,6 @@ public class Entity
     public virtual void Create(Scene scene)
     {
         sprite.Texture = scene.Assets.LoadTexture(textureName);
-
     }
 
     public virtual void Destroy(Scene scene) {}
@@ -38,11 +37,11 @@ public class Entity
     {
         foreach (Entity found in scene.FindIntersects(Bounds))
         {
-            CollideWith(scene, found);          
+            CollideWith(scene, found); 
         }
     }
 
-    public void Render(RenderTarget target)
+    public virtual void Render(RenderTarget target)
     {
         target.Draw(sprite);
     }

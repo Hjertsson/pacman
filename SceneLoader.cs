@@ -15,7 +15,10 @@ public class SceneLoader
         loaders = new Dictionary<char, Func<Entity>>
         {
             { '#', () => new Wall()},
-            { 'g', () => new Ghost()}
+            { 'g', () => new Ghost()},
+            { 'p', () => new Pacman()},
+            { '.', () => new Coin()},
+            { 'c', () => new Candy()}
         };
     }
 
@@ -30,33 +33,22 @@ public class SceneLoader
         {
             foreach (char c in line)
             {
-                switch (c)
+                if(loaders.Keys.Contains(c))
                 {
-                    case '#':
-                        if (Create('#', out Entity wall))
-                        {
-                            wall.Position = new Vector2f(col * 18, row * 18);
-                            scene.Spawn(wall);
-                        };
-                        break;
-                    case 'g':
-                        if (Create('g', out Entity ghost))
-                        {
-                            ghost.Position = new Vector2f(col * 18, row * 18);
-                            scene.Spawn(ghost);
-                        }
-                        break;
+                    Create(c, out Entity entity);
+                    entity.Position = new Vector2f(col * 18, row * 18);
+                    scene.Spawn(entity);
                 }
-
                 col++;
             }
-
             col = 0;
             row++;
         }
 
         currentScene = nextScene;
         nextScene = "";
+        GUI gui = new GUI();
+        scene.Spawn(gui);
     }
 
     private bool Create(char symbol, out Entity created)

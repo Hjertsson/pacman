@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Pacman;
 
-public class AssetManager
+public sealed class AssetManager
 {
     public static readonly string AssetPath = "assets";
     private readonly Dictionary<string, Texture> textures;

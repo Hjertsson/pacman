@@ -3,7 +3,7 @@ using SFML.System;
 
 namespace Pacman;
 
-public class Ghost: Actor
+public sealed class Ghost: Actor
 {
     public override void Create(Scene scene)
     {
@@ -12,6 +12,15 @@ public class Ghost: Actor
         moving = true;
         base.Create(scene);
         sprite.TextureRect = new IntRect(36, 0, 18, 18);
+    }
+
+    protected override void CollideWith(Scene scene, Entity e)
+    {
+        if (e is Pacman)
+        {
+            scene.PublishLoseHealth(1);
+            Reset();
+        }
     }
 
     protected override int PickDirection(Scene scene)
@@ -24,13 +33,6 @@ public class Ghost: Actor
         }
         
         int r = new Random().Next(0, validMoves.Count);
-        Console.WriteLine($"r = {r}, validMoves = {validMoves.Count}");
-
-        if (validMoves[r] >= validMoves.Count)
-        {
-            Console.WriteLine($"r = {r}, validMoves = {validMoves.Count}");
-
-        }
         return validMoves[r];
     }
 }

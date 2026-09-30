@@ -5,7 +5,7 @@ using SFML.Graphics;
 
 namespace Pacman;
 
-public class Actor : Entity
+public abstract class Actor : Entity
 {
     private bool wasAligned;
     protected float speed;
@@ -16,19 +16,20 @@ public class Actor : Entity
 
     protected Actor() : base ("pacman")
     {
-        
     }
 
     protected void Reset()
     {
         wasAligned = false;
-        originalPosition = Position;
-        originalSpeed = speed;
+        Position = originalPosition;
+        speed = originalSpeed;
     }
 
     public override void Create(Scene scene)
     {
         base.Create(scene);
+        originalPosition = Position;
+        originalSpeed = speed;
         Reset();
     }
 
