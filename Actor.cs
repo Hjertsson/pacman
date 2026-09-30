@@ -68,7 +68,7 @@ public abstract class Actor : Entity
     public override void Update(Scene scene, float dt)
     {
         base.Update(scene, dt);
-        if (IsAligned)
+        if (IsAligned) //TODO Här är problem med att animation startar sent
         {
             if (!wasAligned)
             {

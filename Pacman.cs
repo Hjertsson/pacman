@@ -93,10 +93,14 @@ public sealed class Pacman : Actor
         }
 
 
-        if (IsFree(scene, dir)) { return dir; }
+        if (IsFree(scene, dir))
+        {
+            return dir;
+        }
 
-        if (!IsFree(scene, direction))
-        { moving = false; }
+        moving = false;
+        /*if (!IsFree(scene, direction))
+        { moving = false; }*/ //TODO: Det här behöver inte göras eftersom vi vill stanna varje gång vi försöker gå emot en vägg.
         return direction;
     }
 }

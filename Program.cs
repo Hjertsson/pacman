@@ -20,6 +20,7 @@ class Program
             window.SetView(new View(new FloatRect(18,0,414,450)));
 
             Clock clock = new Clock();
+            //Clock delayClock = new Clock();
             while (window.IsOpen)
             {
                 float dt = clock.Restart().AsSeconds();
@@ -31,6 +32,11 @@ class Program
                 // TODO DRAWING
                 scene.RenderAll(window);
                 window.Display();
+                //delayClock.Restart();
+                /*while (delayClock.ElapsedTime.AsSeconds() < 1)
+                {
+                    Console.WriteLine("waiting for next frame");
+                }*/
             }
         }
     }
