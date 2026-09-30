@@ -6,7 +6,7 @@ namespace Pacman;
 public class GUI : Entity
 {
     private Text scoreText;
-    private int maxHealth;
+    private readonly int maxHealth;
     private int currentHealth;
     private int currentScore;
     
@@ -20,7 +20,9 @@ public class GUI : Entity
     public override void Create(Scene scene)
     {
         scoreText.Font = scene.Assets.LoadFont("pixel-font");
-        scoreText.CharacterSize = 18;
+        scoreText.CharacterSize = 200;
+        scoreText.Scale = new Vector2f(0.1f, 0.1f);
+        scoreText.FillColor = Color.Black;
         scoreText.DisplayedString = "Score";
         currentHealth = maxHealth;
         base.Create(scene);
