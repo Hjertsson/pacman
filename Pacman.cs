@@ -62,25 +62,29 @@ public sealed class Pacman : Actor
     protected override int PickDirection(Scene scene)
     {
         dir = direction;
-
         if (Keyboard.IsKeyPressed(Right))
         {
             dir = 0;
-            moving = true;
         }
         else if (Keyboard.IsKeyPressed(Up))
         {
             dir = 1;
-            moving = true;
         }
         else if (Keyboard.IsKeyPressed(Left))
         {
             dir = 2;
-            moving = true;
         }
         else if (Keyboard.IsKeyPressed(Down))
         {
             dir = 3;
+        }
+
+        if (Keyboard.IsKeyPressed(Right) ||
+            Keyboard.IsKeyPressed(Up) ||
+            Keyboard.IsKeyPressed(Left) ||
+            Keyboard.IsKeyPressed(Down))
+        {
+            Animation(dir);
             moving = true;
         }
         else
@@ -88,7 +92,7 @@ public sealed class Pacman : Actor
             moving = false;
         }
 
-        Animation(dir);
+
         if (IsFree(scene, dir)) { return dir; }
 
         if (!IsFree(scene, direction))
