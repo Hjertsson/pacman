@@ -7,7 +7,7 @@ namespace Pacman;
 
 public sealed class Pacman : Actor
 {
-    private int dir;
+    private int newDirection;
     private int animationFrame;
     private float animationTimer;
     
@@ -32,12 +32,13 @@ public sealed class Pacman : Actor
 
     public override void Update(Scene scene, float dt)
     {
-        base.Update(scene, dt);
         animationTimer += dt;
+        base.Update(scene, dt);
+        
     }
 
     private void Animation(int dir)
-    { 
+    {
         if (moving)
         {
             switch (animationTimer)
@@ -58,25 +59,28 @@ public sealed class Pacman : Actor
             sprite.TextureRect = new IntRect(0, dir * 18, 18, 18);
         }
 
+
     }
     protected override int PickDirection(Scene scene)
     {
-        dir = direction;
+        
+    
+        newDirection = direction;
         if (Keyboard.IsKeyPressed(Right))
         {
-            dir = 0;
+            newDirection = 0;
         }
         else if (Keyboard.IsKeyPressed(Up))
         {
-            dir = 1;
+            newDirection = 1;
         }
         else if (Keyboard.IsKeyPressed(Left))
         {
-            dir = 2;
+            newDirection = 2;
         }
         else if (Keyboard.IsKeyPressed(Down))
         {
-            dir = 3;
+            newDirection = 3;
         }
 
         if (Keyboard.IsKeyPressed(Right) ||
@@ -84,7 +88,7 @@ public sealed class Pacman : Actor
             Keyboard.IsKeyPressed(Left) ||
             Keyboard.IsKeyPressed(Down))
         {
-            Animation(dir);
+            Animation(newDirection);
             moving = true;
         }
         else
@@ -92,11 +96,14 @@ public sealed class Pacman : Actor
             moving = false;
         }
 
+        if (IsFree(scene, newDirection))
+        {
+            return newDirection;
+        }
 
-        if (IsFree(scene, dir)) { return dir; }
+        moving = false;
 
-        if (!IsFree(scene, direction))
-        { moving = false; }
-        return direction;
+        return newDirection;
+    
     }
 }

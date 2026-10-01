@@ -6,11 +6,14 @@ namespace Pacman;
 
 public sealed class Ghost: Actor
 {
+    //private bool collided = false;
+    //private float collisionTimer;
 
     private bool frozen = false;
     
     private float animationTimer;
     private float frozenTimer;
+    private int bonusPoints = 200;
     private IntRect redGhostBase = new IntRect(36, 0, 18, 18);
     private IntRect redGhostMove = new IntRect(54, 0, 18, 18);
     private IntRect blueGhostBase = new IntRect(36, 18, 18, 18);
@@ -32,12 +35,24 @@ public sealed class Ghost: Actor
     }
     protected override void CollideWith(Scene scene, Entity e)
     {
-        if (e is Pacman)
+        if (!collided)
         {
-            if (frozenTimer <= 0.0f)
+            if (e is Pacman)
             {
-                scene.Events.PublishLoseHealth(1);
-                Reset();
+                collided = true;
+                collisionTimer = 0;
+                if (frozenTimer <= 0.0f)
+                {
+                    scene.Events.PublishLoseHealth(1);
+                    Reset();
+                }
+                if (frozenTimer > 0.0f)
+                {
+                    scene.Events.PublishGainScore(1000 + bonusPoints);
+                    bonusPoints *= 2;
+                    Reset();
+                }
+                
             }
         }
     }
@@ -97,16 +112,7 @@ public sealed class Ghost: Actor
         }
         Animation();
     }
-
-    public override void Render(RenderTarget target)
-    {
-        /*if (frozenTimer > 0.0f)
-        {
-            sprite.TextureRect = new IntRect(36, 18, 18, 18);
-        }
-        else sprite.TextureRect = redGhostBase;*/
-        base.Render(target);
-    }
+    
     public override FloatRect Bounds
     {
         get

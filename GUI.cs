@@ -20,8 +20,10 @@ public class GUI : Entity
     public override void Create(Scene scene)
     {
         scoreText.Font = scene.Assets.LoadFont("pixel-font");
-        scoreText.CharacterSize = 18;
+        scoreText.CharacterSize = 200;
         scoreText.DisplayedString = "Score";
+        scoreText.Scale = new Vector2f(0.1f, 0.1f);
+        scoreText.FillColor = Color.Black;
         currentHealth = maxHealth;
         base.Create(scene);
 

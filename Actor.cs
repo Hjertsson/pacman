@@ -1,22 +1,25 @@
 ﻿using System.Data;
 using SFML.System;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using SFML.Graphics;
 
 namespace Pacman;
 
 public abstract class Actor : Entity
 {
+    protected bool collided;
+    protected float collisionTimer;
+    
     public float AnimationTimer;
-
+    private float timer;
     private bool wasAligned;
     protected float speed;
     protected int direction;
     protected bool moving;
     protected Vector2f originalPosition;
     protected float originalSpeed;
-    protected float animationTimer;
-
+    
     protected Actor() : base ("pacman")
     {
     }
@@ -35,7 +38,19 @@ public abstract class Actor : Entity
         originalSpeed = speed;
         Reset();
     }
-    
+    private void TimeOut()
+    {
+        if (collided)
+        {
+            speed = 0;
+            if (collisionTimer >= 1f)
+            {
+                speed = originalSpeed;
+                collided = false;
+                collisionTimer = 0;
+            }
+        }
+    }
     protected bool IsAligned =>
         (int)MathF.Floor(Position.X) % 18 == 0 &&
         (int)MathF.Floor(Position.Y) % 18 == 0;
@@ -67,6 +82,7 @@ public abstract class Actor : Entity
 
     public override void Update(Scene scene, float dt)
     {
+        collisionTimer += dt;
         base.Update(scene, dt);
         if (IsAligned)
         {
@@ -92,6 +108,7 @@ public abstract class Actor : Entity
             > 432 => new Vector2f(0, Position.Y),
             _ => Position
         };
+        TimeOut();
     }
    
 }
