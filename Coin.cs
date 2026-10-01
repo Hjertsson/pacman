@@ -2,7 +2,7 @@
 
 namespace Pacman;
 
-public class Coin : Entity
+public sealed class Coin : Entity
 {
     public Coin() : base("pacman")
     {

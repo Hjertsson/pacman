@@ -6,18 +6,14 @@ namespace Pacman;
 
 public sealed class Ghost: Actor
 {
-    //private bool collided = false;
-    //private float collisionTimer;
-
     private bool frozen = false;
-    
     private float animationTimer;
     private float frozenTimer;
     private int bonusPoints = 200;
-    private IntRect redGhostBase = new IntRect(36, 0, 18, 18);
-    private IntRect redGhostMove = new IntRect(54, 0, 18, 18);
-    private IntRect blueGhostBase = new IntRect(36, 18, 18, 18);
-    private IntRect blueGhostMove = new IntRect(54, 18, 18, 18);
+    private readonly IntRect redGhostBase = new IntRect(36, 0, 18, 18);
+    private readonly IntRect redGhostMove = new IntRect(54, 0, 18, 18);
+    private readonly IntRect blueGhostBase = new IntRect(36, 18, 18, 18);
+    private readonly IntRect blueGhostMove = new IntRect(54, 18, 18, 18);
     public override void Create(Scene scene)
     {
         direction = -1;
@@ -41,10 +37,10 @@ public sealed class Ghost: Actor
             {
                 if (frozenTimer <= 0.0f)
                 {
-                    if (!e.immortal)
+                    if (!e.Immortal)
                     {
                         scene.Events.PublishLoseHealth(1);
-                        e.immortal = true;
+                        e.Immortal = true;
                     }
                 }
                 if (frozenTimer > 0.0f)

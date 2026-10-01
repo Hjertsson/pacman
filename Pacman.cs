@@ -107,11 +107,11 @@ public sealed class Pacman : Actor
         timer += dt;
         animationTimer += dt;
         base.Update(scene, dt);
-        if (immortal)
+        if (Immortal)
         {
             if (timer > 1f)
             {
-                immortal = false;
+                Immortal = false;
                 sprite.Color = new Color(255, 255, 255);
 
             }

@@ -11,14 +11,13 @@ public abstract class Actor : Entity
     protected bool collided;
     protected float collisionTimer;
     
-    public float AnimationTimer;
     private float timer;
     private bool wasAligned;
     protected float speed;
     protected int direction;
     protected bool moving;
-    protected Vector2f originalPosition;
-    protected float originalSpeed;
+    private Vector2f originalPosition;
+    private float originalSpeed;
     
     protected Actor() : base ("pacman")
     {
@@ -90,7 +89,7 @@ public abstract class Actor : Entity
         {
             if (!wasAligned)
             {
-                if (!immortal)
+                if (!Immortal)
                 {
                     direction = PickDirection(scene);
                 }

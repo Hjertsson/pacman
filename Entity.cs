@@ -6,19 +6,21 @@ namespace Pacman;
 
 public abstract class Entity
 {
-    public bool immortal;
     
     private string textureName;
     protected Sprite sprite;
     public bool Dead;
     public bool DontDestroyOnLoad;
+    public bool Immortal;
 
     protected Entity(string textureName)
     {
         this.textureName = textureName;
         sprite = new Sprite();
     }
-
+    
+    
+    
     public Vector2f Position
     {
         get => sprite.Position;

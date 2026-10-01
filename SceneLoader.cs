@@ -5,7 +5,7 @@ using SFML.System;
 
 namespace Pacman;
 
-public class SceneLoader
+public sealed class SceneLoader
 {
     private readonly Dictionary<char, Func<Entity>> loaders;
     private string currentScene = "", nextScene = "";

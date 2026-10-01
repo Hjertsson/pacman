@@ -3,7 +3,7 @@
 namespace Pacman;
 
 public delegate void ValueChangedEvent(Scene scene, int value);
-public class EventManager
+public sealed class EventManager
 {
     private int scoreGained;
     private int healthLost;

@@ -5,11 +5,11 @@ using SFML.Window;
 
 namespace Pacman;
 
-public class GUI : Entity
+public sealed class GUI : Entity
 {
     private Text scoreText;
     private Text highScoreText;
-    private int maxHealth;
+    private readonly int maxHealth;
     private int currentHealth;
     private int currentScore;
     private int highScore;
