@@ -1,17 +1,23 @@
-﻿namespace Pacman;
+﻿using SFML.Window;
+
+namespace Pacman;
+
 public delegate void ValueChangedEvent(Scene scene, int value);
 public class EventManager
 {
     private int scoreGained;
     private int healthLost;
     private int candyStatus;
+
     public event ValueChangedEvent GainScore;
     public event ValueChangedEvent LoseHealth;
     public event ValueChangedEvent CandyEaten;
+
     
     public void PublishGainScore(int amount) => scoreGained += amount;
     public void PublishLoseHealth(int amount) => healthLost += amount;
     public void PublishCandyEaten(int amount) => candyStatus += amount;
+
 
     public void CheckEvent(Scene scene)
     {

@@ -26,6 +26,7 @@ public sealed class Pacman : Actor
         Reset();
         moving = false;
         timer = 0;
+        sprite.Color = new Color(255, 255, 255, 100);
     }
 
     public override void Destroy(Scene scene)
@@ -111,6 +112,8 @@ public sealed class Pacman : Actor
             if (timer > 1f)
             {
                 immortal = false;
+                sprite.Color = new Color(255, 255, 255);
+
             }
         }
     }

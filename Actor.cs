@@ -43,8 +43,10 @@ public abstract class Actor : Entity
         if (collided)
         {
             speed = 0;
+            sprite.Color = new Color(255, 255, 255, 100);
             if (collisionTimer >= 1f)
             {
+                sprite.Color = new Color(255, 255, 255);
                 speed = originalSpeed;
                 collided = false;
                 collisionTimer = 0;

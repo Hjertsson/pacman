@@ -23,6 +23,8 @@ public class SceneLoader
             { 'c', () => new Candy()}
         };
     }
+    
+    
 
     public void HandleSceneLoad(Scene scene)
     {

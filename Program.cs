@@ -8,7 +8,7 @@ class Program
 {
     public const int SCREEN_WIDTH = 828;
     public const int SCREEN_HEIGHT = 900;
-    
+    public static bool paused;
     static void Main(string[] args)
     {
         Scene scene = new Scene();
@@ -27,8 +27,16 @@ class Program
                 dt = MathF.Min(dt, 0.01f);
                 window.DispatchEvents();
                 //TODO UPDATES
-                scene.UpdateAll(dt);
-                window.Clear(new Color(223, 246, 245));
+                if (paused)
+                {
+                    if (Keyboard.IsKeyPressed(Keyboard.Key.Enter))
+                    {
+                        paused = false;
+                    }
+                }
+                else scene.UpdateAll(dt);
+                
+                window.Clear(new Color(123, 146, 145));
                 // TODO DRAWING
                 scene.RenderAll(window);
                 window.Display();
