@@ -39,15 +39,14 @@ public sealed class Ghost: Actor
         {
             if (e is Pacman)
             {
-                collided = true;
-                collisionTimer = 0;
                 if (frozenTimer <= 0.0f)
                 {
                     scene.Events.PublishLoseHealth(1);
-                    Reset();
                 }
                 if (frozenTimer > 0.0f)
                 {
+                    collided = true;
+                    collisionTimer = 0;
                     scene.Events.PublishGainScore(1000 + bonusPoints);
                     bonusPoints *= 2;
                     Reset();
