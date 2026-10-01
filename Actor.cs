@@ -88,7 +88,14 @@ public abstract class Actor : Entity
         {
             if (!wasAligned)
             {
-                direction = PickDirection(scene);
+                if (!immortal)
+                {
+                    direction = PickDirection(scene);
+                }
+                else
+                {
+                    direction = -1;
+                }
             }
             if (moving)
             {

@@ -41,7 +41,11 @@ public sealed class Ghost: Actor
             {
                 if (frozenTimer <= 0.0f)
                 {
-                    scene.Events.PublishLoseHealth(1);
+                    if (!e.immortal)
+                    {
+                        scene.Events.PublishLoseHealth(1);
+                        e.immortal = true;
+                    }
                 }
                 if (frozenTimer > 0.0f)
                 {

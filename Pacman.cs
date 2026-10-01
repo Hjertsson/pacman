@@ -7,6 +7,8 @@ namespace Pacman;
 
 public sealed class Pacman : Actor
 {
+    private float timer;
+    
     private int newDirection;
     private int animationFrame;
     private float animationTimer;
@@ -22,19 +24,14 @@ public sealed class Pacman : Actor
     private void OnLoseHealth(Scene scene, int amount)
     {
         Reset();
+        moving = false;
+        timer = 0;
     }
 
     public override void Destroy(Scene scene)
     {
         base.Destroy(scene);
         scene.Events.LoseHealth -= OnLoseHealth;
-    }
-
-    public override void Update(Scene scene, float dt)
-    {
-        animationTimer += dt;
-        base.Update(scene, dt);
-        
     }
 
     private void Animation(int dir)
@@ -63,8 +60,6 @@ public sealed class Pacman : Actor
     }
     protected override int PickDirection(Scene scene)
     {
-        
-    
         newDirection = direction;
         if (Keyboard.IsKeyPressed(Right))
         {
@@ -100,10 +95,23 @@ public sealed class Pacman : Actor
         {
             return newDirection;
         }
-
+        
         moving = false;
 
         return newDirection;
+    }
     
+    public override void Update(Scene scene, float dt)
+    {
+        timer += dt;
+        animationTimer += dt;
+        base.Update(scene, dt);
+        if (immortal)
+        {
+            if (timer > 1f)
+            {
+                immortal = false;
+            }
+        }
     }
 }

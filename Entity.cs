@@ -6,6 +6,8 @@ namespace Pacman;
 
 public abstract class Entity
 {
+    public bool immortal;
+    
     private string textureName;
     protected Sprite sprite;
     public bool Dead;
