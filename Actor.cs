@@ -8,47 +8,44 @@ namespace Pacman;
 
 public abstract class Actor : Entity
 {
-    protected bool collided;
-    protected float collisionTimer;
+    protected bool Collided;
+    protected float CollisionTimer; // Timer för kollision mellan två olika typer av Actor objekt
     
-    private float timer;
     private bool wasAligned;
-    protected float speed;
-    protected int direction;
-    protected bool moving;
+    protected float Speed;
+    protected int Direction;
+    protected bool Moving;
     private Vector2f originalPosition;
     private float originalSpeed;
     
-    protected Actor() : base ("pacman")
-    {
-    }
+    protected Actor() : base ("pacman") {}
 
     protected void Reset()
     {
         wasAligned = false;
         Position = originalPosition;
-        speed = originalSpeed;
+        Speed = originalSpeed;
     }
 
     public override void Create(Scene scene)
     {
         base.Create(scene);
         originalPosition = Position;
-        originalSpeed = speed;
+        originalSpeed = Speed;
         Reset();
     }
     private void TimeOut()
     {
-        if (collided)
+        if (Collided) 
         {
-            speed = 0;
+            Speed = 0;
             sprite.Color = new Color(255, 255, 255, 100);
-            if (collisionTimer >= 1f)
+            if (CollisionTimer >= 1f)
             {
                 sprite.Color = new Color(255, 255, 255);
-                speed = originalSpeed;
-                collided = false;
-                collisionTimer = 0;
+                Speed = originalSpeed;
+                Collided = false;
+                CollisionTimer = 0;
             }
         }
     }
@@ -66,7 +63,7 @@ public abstract class Actor : Entity
 
     protected static Vector2f ToVector(int dir)
     {
-        switch (dir) 
+        switch (dir) // Konverterar int till en vektor, Kontrollerar vilket håll ett Actor objekt rör sig
         {
             case 0: return new Vector2f(1, 0);
             case 1: return new Vector2f(0, -1);
@@ -83,7 +80,7 @@ public abstract class Actor : Entity
 
     public override void Update(Scene scene, float dt)
     {
-        collisionTimer += dt;
+        CollisionTimer += dt;
         base.Update(scene, dt);
         if (IsAligned)
         {
@@ -91,14 +88,14 @@ public abstract class Actor : Entity
             {
                 if (!Immortal)
                 {
-                    direction = PickDirection(scene);
+                    Direction = PickDirection(scene);
                 }
                 else
                 {
-                    direction = -1;
+                    Direction = -1;
                 }
             }
-            if (moving)
+            if (Moving)
             {
                 wasAligned = true;
             }
@@ -108,8 +105,8 @@ public abstract class Actor : Entity
             wasAligned = false;
         }   
         
-        if(!moving) return;
-        Position += ToVector(direction) * (speed * dt);
+        if(!Moving) return;
+        Position += ToVector(Direction) * (Speed * dt);
         Position = MathF.Floor(Position.X)switch
         {
             < 0 => new Vector2f(432, Position.Y),

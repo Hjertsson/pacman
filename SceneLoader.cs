@@ -24,8 +24,6 @@ public sealed class SceneLoader
         };
     }
     
-    
-
     public void HandleSceneLoad(Scene scene)
     {
         if (nextScene == "") return;
@@ -37,9 +35,8 @@ public sealed class SceneLoader
         {
             foreach (char c in line)
             {
-                if(loaders.Keys.Contains(c))
+                if (Create(c, out Entity entity))
                 {
-                    Create(c, out Entity entity);
                     entity.Position = new Vector2f(col * 18, row * 18);
                     scene.Spawn(entity);
                 }

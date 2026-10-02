@@ -10,12 +10,11 @@ public sealed class Pacman : Actor
     private float timer;
     
     private int newDirection;
-    private int animationFrame;
     private float animationTimer;
     
     public override void Create(Scene scene)
     {
-        speed = 100.0f;
+        Speed = 100.0f;
         base.Create(scene);
         sprite.TextureRect = new IntRect(0, 0, 18, 18);
         scene.Events.LoseHealth += OnLoseHealth;
@@ -24,7 +23,7 @@ public sealed class Pacman : Actor
     private void OnLoseHealth(Scene scene, int amount)
     {
         Reset();
-        moving = false;
+        Moving = false;
         timer = 0;
         sprite.Color = new Color(255, 255, 255, 100);
     }
@@ -37,7 +36,7 @@ public sealed class Pacman : Actor
 
     private void Animation(int dir)
     {
-        if (moving)
+        if (Moving)
         {
             switch (animationTimer)
             {
@@ -56,12 +55,10 @@ public sealed class Pacman : Actor
         {
             sprite.TextureRect = new IntRect(0, dir * 18, 18, 18);
         }
-
-
     }
-    protected override int PickDirection(Scene scene)
+    protected override int PickDirection(Scene scene) // Animation sker före moving sätta till true, vilket ibland gör så pacman objektet inte pekar åt rätt håll när riktningen ändras
     {
-        newDirection = direction;
+        newDirection = Direction;
         if (Keyboard.IsKeyPressed(Right))
         {
             newDirection = 0;
@@ -85,11 +82,11 @@ public sealed class Pacman : Actor
             Keyboard.IsKeyPressed(Down))
         {
             Animation(newDirection);
-            moving = true;
+            Moving = true;
         }
         else
         {
-            moving = false;
+            Moving = false;
         }
 
         if (IsFree(scene, newDirection))
@@ -97,7 +94,7 @@ public sealed class Pacman : Actor
             return newDirection;
         }
         
-        moving = false;
+        Moving = false;
 
         return newDirection;
     }
@@ -113,7 +110,6 @@ public sealed class Pacman : Actor
             {
                 Immortal = false;
                 sprite.Color = new Color(255, 255, 255);
-
             }
         }
     }

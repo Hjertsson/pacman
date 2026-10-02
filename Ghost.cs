@@ -6,9 +6,9 @@ namespace Pacman;
 
 public sealed class Ghost: Actor
 {
-    private bool frozen = false;
+    private bool preyMode = false;
     private float animationTimer;
-    private float frozenTimer;
+    private float preyModeTimer;
     private int bonusPoints = 200;
     private readonly IntRect redGhostBase = new IntRect(36, 0, 18, 18);
     private readonly IntRect redGhostMove = new IntRect(54, 0, 18, 18);
@@ -16,9 +16,9 @@ public sealed class Ghost: Actor
     private readonly IntRect blueGhostMove = new IntRect(54, 18, 18, 18);
     public override void Create(Scene scene)
     {
-        direction = -1;
-        speed = 100.0f;
-        moving = true;
+        Direction = -1;
+        Speed = 100.0f;
+        Moving = true;
         base.Create(scene);
         sprite.TextureRect = redGhostBase;
         scene.Events.CandyEaten += OnCandyEaten;
@@ -26,16 +26,16 @@ public sealed class Ghost: Actor
 
     private void OnCandyEaten(Scene scene, int amount)
     {
-        frozenTimer = 5.0f;
-        frozen = true;
+        preyModeTimer = 5.0f;
+        preyMode = true;
     }
     protected override void CollideWith(Scene scene, Entity e)
     {
-        if (!collided)
+        if (!Collided) // För att inte kunna kollidera med samma spöke igen innan en ny "Prey mode" aktiveras igen
         {
             if (e is Pacman)
             {
-                if (frozenTimer <= 0.0f)
+                if (preyModeTimer <= 0.0f)
                 {
                     if (!e.Immortal)
                     {
@@ -43,15 +43,14 @@ public sealed class Ghost: Actor
                         e.Immortal = true;
                     }
                 }
-                if (frozenTimer > 0.0f)
+                if (preyModeTimer > 0.0f)
                 {
-                    collided = true;
-                    collisionTimer = 0;
+                    Collided = true;
+                    CollisionTimer = 0;
                     scene.Events.PublishGainScore(1000 + bonusPoints);
                     bonusPoints *= 2;
                     Reset();
                 }
-                
             }
         }
     }
@@ -61,7 +60,7 @@ public sealed class Ghost: Actor
         switch (animationTimer)
         {
             case < 0.2f:
-                if (frozen)
+                if (preyMode)
                 {
                     sprite.TextureRect = blueGhostBase;
                 }
@@ -72,7 +71,7 @@ public sealed class Ghost: Actor
 
                 break;
             case > 0.2f and < 0.4f:
-                if (frozen)
+                if (preyMode)
                 {
                     sprite.TextureRect = blueGhostMove;
                 }
@@ -92,7 +91,7 @@ public sealed class Ghost: Actor
         List<int> validMoves = new List<int>();
         for (int i = 0; i < 4; i++)
         {
-            if ((i+2) % 4 == direction) continue;
+            if ((i+2) % 4 == Direction) continue;
             if (IsFree(scene, i)) validMoves.Add(i);
         }
         
@@ -104,10 +103,10 @@ public sealed class Ghost: Actor
     {
         base.Update(scene, dt);
         animationTimer += dt;
-        frozenTimer = MathF.Max(frozenTimer - dt, 0.0f);
-        if (frozenTimer <= 0)
+        preyModeTimer = MathF.Max(preyModeTimer - dt, 0.0f);
+        if (preyModeTimer <= 0)
         {
-            frozen = false;
+            preyMode = false;
         }
         Animation();
     }
@@ -123,6 +122,5 @@ public sealed class Ghost: Actor
             bounds.Height -= 1;
             return bounds;
         } 
-        
     }
 }

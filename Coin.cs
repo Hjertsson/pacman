@@ -15,9 +15,9 @@ public sealed class Coin : Entity
         {
             scene.Events.PublishGainScore(100);
             Dead = true;
+            
         }
     }
-    
     
     public override FloatRect Bounds
     {

@@ -7,12 +7,13 @@ namespace Pacman;
 
 public sealed class GUI : Entity
 {
-    private Text scoreText;
-    private Text highScoreText;
-    private readonly int maxHealth;
+    private readonly Text scoreText;
+    private readonly Text highScoreText;
+    private int maxHealth;
     private int currentHealth;
     private int currentScore;
-    private int highScore;
+
+    private int savedHealth = 4;
     
     public GUI() : base("pacman")
     {
@@ -34,20 +35,22 @@ public sealed class GUI : Entity
         highScoreText.DisplayedString = "Score";
         highScoreText.Scale = new Vector2f(0.1f, 0.1f);
         highScoreText.FillColor = Color.Red;
-        currentHealth = maxHealth;
+        currentHealth = savedHealth;
         base.Create(scene);
 
-        scene.Events.LoseHealth += OnLoseHealth;
+        scene.Events.LoseHealth += OnLoseHealth; // Prenumererar på Eventen
         scene.Events.GainScore += OnScoreGain;
     }
 
     private void OnScoreGain(Scene scene, int amount)
     {
         currentScore += amount;
-        if (!scene.FindByType<Coin>(out _))
+        if (!scene.FindByType<Coin>(out _)) // Om det inte finns fler Coin objekt, återställ alla objekt som inte har DontDestroyOnLoad = true;
         {
+            savedHealth = currentHealth;
             DontDestroyOnLoad = true;
             scene.Loader.Reload();
+            scene.Events.GainScore -= OnScoreGain;
         }
     }
     private void OnLoseHealth(Scene scene, int amount)
@@ -56,30 +59,29 @@ public sealed class GUI : Entity
         if (currentHealth <= 0)
         {
             DontDestroyOnLoad = false;
-            string score = HighScore();
-            Program.paused = true;
-            ShowHighScore(score);
+            string score = HighScore(); // HighScore() returnerar värdet i HighScore filen
+            Program.paused = true; // Flaggar paused vilket pausar alla objekt tills paused är satt till false
+            ShowHighScore(score); // Skriver ut score värdet på skärmen
             currentScore = 0;
+            savedHealth = maxHealth;
             scene.Loader.Reload();
         }
         
     }
     private string HighScore()
     {
-        string fileMain = "../../../assets/HighScore.txt";
-        string fileBin = "assets/HighScore.txt";
+        string fileMain = "../../../assets/HighScore.txt"; // Läser in Highscore i Assets
+        string fileBin = "assets/HighScore.txt"; // Läser in Highscore i bin/debug/net10
         string score = $"{currentScore}";
-        string currentHighScore = File.ReadAllText(fileBin);
+        string currentHighScore = File.ReadAllText(fileBin); //Läser av nuvarande värdet i filen "fileBin"
         
-        if (File.Exists(fileBin))
+        if (int.Parse(currentHighScore) < currentScore) // Konverterar till int och jämför med poängen i nuvarande omgång
         {
-            if (int.Parse(currentHighScore) < currentScore)
-            {
-                File.WriteAllText(fileBin, score, Encoding.UTF8);
-            }
+            File.WriteAllText(fileBin, score, Encoding.UTF8); // Om det är högre så skriver vi över med det nya värdet
         }
-        string newHighScore = File.ReadAllText(fileBin);
-        File.WriteAllText(fileMain, newHighScore, Encoding.UTF8);
+       
+        string newHighScore = File.ReadAllText(fileBin); //Värdet i fileBin läses av och sparas som en string NewHighScore
+        File.WriteAllText(fileMain, newHighScore, Encoding.UTF8); //Skriver newHighScore i Assets filen för att spara mellan omstart av spelet
         return newHighScore;
     }
 

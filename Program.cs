@@ -6,8 +6,8 @@ namespace Pacman;
 
 class Program
 {
-    public const int SCREEN_WIDTH = 828;
-    public const int SCREEN_HEIGHT = 900;
+    private const int SCREEN_WIDTH = 828;
+    private const int SCREEN_HEIGHT = 900;
     public static bool paused;
     static void Main(string[] args)
     {
@@ -23,10 +23,8 @@ class Program
             while (window.IsOpen)
             {
                 float dt = clock.Restart().AsSeconds();
-                //if (dt > 0.1f) dt = 0.01f;
                 dt = MathF.Min(dt, 0.01f);
                 window.DispatchEvents();
-                //TODO UPDATES
                 if (paused)
                 {
                     if (Keyboard.IsKeyPressed(Keyboard.Key.Enter))
@@ -35,9 +33,7 @@ class Program
                     }
                 }
                 else scene.UpdateAll(dt);
-                
                 window.Clear(new Color(123, 146, 145));
-                // TODO DRAWING
                 scene.RenderAll(window);
                 window.Display();
             }

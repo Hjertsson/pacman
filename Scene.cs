@@ -49,7 +49,6 @@ public sealed class Scene
                 return true;
             }
         }
-
         found = default(T);
         return false;
     }
